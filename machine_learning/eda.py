@@ -7,7 +7,7 @@ from plotly.subplots import make_subplots
 import numpy as np
 import os
 import seaborn as sns
-
+from sklearn.preprocessing import MinMaxScaler
 import matplotlib.patches as patches 
 import plotly.graph_objects as go
 from pandas.plotting import scatter_matrix
