@@ -11,8 +11,7 @@ import seaborn as sns
 import matplotlib.patches as patches 
 import plotly.graph_objects as go
 from pandas.plotting import scatter_matrix
-from sklearn.preprocessing import LabelEncoder
-from sklearn.ensemble import RandomForestRegressor
+
 from sklearn.preprocessing import MinMaxScaler
 import plotly.figure_factory as ff
 import pickle
@@ -308,40 +307,7 @@ def eda_app():
         sns.heatmap(corr_precio, annot = True)
         st.pyplot(plt) 
         
-
-
-    #feature importance
-    if section == "Feature Importance":
-        titulo = "<h2 style='color:CornflowerBlue;'>Feature Importance</h2>"
-        st.write(titulo, unsafe_allow_html=True)
-        st.write("Utilizamos el modelo de Random Forest para la predicción de las variables con mayor relevancia para la predicción de precios.\n\n ")
-        
-        # Preparo los datos apra el modelo
-        df = df.drop(["Precio_log"], axis=1)
-        df[df.select_dtypes(exclude=['int', 'float']).columns] = df.select_dtypes(exclude=['int', 'float']).apply(lambda x: LabelEncoder().fit_transform(x))
-                
-        X = df.drop(["Precio"], axis = 1)
-        y = df["Precio"]
-
-        print(f"X: {X.shape}")
-        print(f"y: {y.shape}")
-
-        # Modelo de RandomForest para obtener Feature Importance
-        model = pickle.load(open(f"../modelos_entrenados/ModeloRandomForest1.pk", 'rb'))
-        # Calculamos Feature Importance
-        importances = model.feature_importances_
-
-        df_importances = pd.DataFrame(data = zip(X.columns, importances),
-                                    columns = ["Columnas", "Importancia"])
-
-        df_importances = df_importances.sort_values("Importancia", ascending = True)
-
-        fig = go.Figure(go.Bar(
-            x= df_importances["Importancia"],
-            y=df_importances["Columnas"],
-            orientation='h'))
-        fig.update_layout(autosize=False, width=800, height=800)
-        st.plotly_chart(fig)
+ 
     
     if section == "Conclusión":
         titulo = "<h2 style='color:CornflowerBlue;'>Conclusión:</h2>"
